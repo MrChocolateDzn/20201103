@@ -1,9 +1,9 @@
 <?php
 abstract class PDORepository{
-    const USERNAME="victorf";
-    const PASSWORD="Victor2020";
-    const SERVER="SQLSRV2";
-    const DB="vfleischmann";
+    const USERNAME="timoto";
+    const PASSWORD="timoto2020";
+    const SERVER="SQLSRV1";
+    const DB="TEST";
 
     private function getConnection(){
         $username = self::USERNAME;
@@ -36,6 +36,28 @@ abstract class PDORepository{
         $stmt->execute();
         return $stmt;
     }
+
+    protected function insertion(FormationEleve $unEleve){
+        $connection = $this->getConnection();
+        $stmt = $connection->prepare("INSERT INTO PROCS.FORMATIONELEVES(nom_eleve, nb_heures_cours_info,code_filiere) VALUES (:nom,:nbh,:filiere)");
+
+        $nom = $unEleve->getNom_eleve() ;
+        $heure = $unEleve->getNb_heures_cours_info() ;
+        $filiere = $unEleve->getCode_filiere() ;
+
+
+        $stmt->bindParam(':nom',$nom,PDO::PARAM_STR) ;
+        $stmt->bindParam(':nbh',$heure,PDO::PARAM_INT) ;
+        $stmt->bindParam(':filiere',$filiere,PDO::PARAM_STR) ;
+
+        $stmt->execute() ;
+        return $stmt ;
+
+    }
+
+
+    abstract function doisRedefinir() ;
+
 }
 
 ?>
